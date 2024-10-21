@@ -310,7 +310,7 @@ def predict(model, image):
         save=True,
         line_width=3,
         show_labels=True,
-        show_conf=True,
+        show_conf=True
     )
     # Display prediction
     results[0].show()
