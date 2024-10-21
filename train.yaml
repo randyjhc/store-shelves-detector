@@ -1,5 +1,5 @@
-path: ./01_images
-train: train
-val: val
+path: ../02_preprocess/
+train: images/train
+val: images/val
 nc: 1
 names: ['object']
