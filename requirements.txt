@@ -3,7 +3,7 @@ matplotlib
 opencv-python
 jupyter
 ultralytics
-# kaggle
 kagglehub
 click
 black
+gradio

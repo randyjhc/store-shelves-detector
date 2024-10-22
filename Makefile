@@ -1,4 +1,4 @@
-MAIN_FILE = shelve_detect.py
+MAIN_FILE = shelf_detection.py
 
 install:
 	pip install --upgrade pip &&\

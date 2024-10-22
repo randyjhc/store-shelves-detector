@@ -4,16 +4,17 @@ import numpy as np
 from ultralytics import YOLO
 from matplotlib import pyplot as plt
 
+
 def subsample_data(source_path, target_path, num_samples):
     """
-    Randomly subsample a specified number of images and labels from the source dataset 
+    Randomly subsample a specified number of images and labels from the source dataset
     and copy them to a target directory.
 
     Parameters:
         source_path (str): Path to the source dataset.
         target_path (str): Path to store the subsampled data.
         num_samples (tuple): Number of samples for train, validation, and test sets.
-    
+
     Returns:
         tuple: Lists of image and label file paths.
     """
@@ -229,24 +230,42 @@ def write_train_yaml(yaml_name, full_dataset=False):
         fp.write(f"names: ['object']")  # Class names
 
 
+def read_image_list(image_list):
+    """
+    Reads a list of image file paths from a text file and returns them as a list of strings.
+
+    Args:
+        image_list (str): The path to a text file containing the list of image file paths.
+                          Each line in the file should represent a separate image file path.
+
+    Returns:
+        list of str: A list containing the image file paths as strings.
+    """
+    with open(image_list, "r") as fp:
+        image_filenames = [line.rstrip() for line in fp]
+    return image_filenames
+
+
 # The Click library command-line interface setup
 @click.command()
 @click.option(
     "--samples",
     type=click.Tuple([int, int, int]),
     default=(80, 20, 20),
-    help="tuple of (train, val, test) samples"
+    help="tuple of (train, val, test) samples",
 )
 @click.option(
     "--weights",
     type=click.STRING,
     default="yolo11n.pt",
-    help="string of pre-trained model name"
+    help="string of pre-trained model name",
 )
-@click.option("--epochs", type=click.INT, default=1, help="number of training iterations")
+@click.option(
+    "--epochs", type=click.INT, default=1, help="number of training iterations"
+)
 def train(samples, weights, epochs):
     """
-    Train a YOLOv11 model using the specified dataset and parameters.
+    Train a YOLOv11 model using the specified dataset and parameters.\f
 
     Parameters:
         samples (tuple): Number of samples for training, validation, and testing.
@@ -288,32 +307,53 @@ def train(samples, weights, epochs):
     # Evaluate the model
     metrics = model.val()
 
-    click.echo(click.style("=== The training completed successfully. ===", fg="magenta"))
+    click.echo(
+        click.style("=== The training completed successfully. ===", fg="magenta")
+    )
 
 
 @click.command()
 @click.argument("model", type=click.STRING)
-@click.argument("image", type=click.STRING)
-def predict(model, image):
+@click.argument("images", type=click.STRING)
+@click.option(
+    "--save_dir",
+    type=click.Tuple([str, str]),
+    default=("sample", "outputs"),
+    help="string of folder name for prediction output",
+)
+@click.option(
+    "--verbose",
+    type=click.BOOL,
+    default=False,
+    help="set True to show image after prediction",
+)
+def predict(model, images, save_dir=("samples", "outputs"), verbose=False):
     """
-    Predict bounding boxes for an image using a pre-trained YOLO model.
-
+    Predict bounding boxes for an image using a pre-trained YOLO model.\f
+    
     Parameters:
         model (str): Path to the trained model weights.
         image (str): Path to the input image.
+        save_dir (tuple): Path (./tup[0]/tup[1]/) to save the prediction output.
+        verbose (bool): Set True to show image after prediction.
     """
     click.echo(click.style("=== Start predicting process. ===", fg="green"))
-    model = YOLO(model)  # Load model
+    # Load model
+    model = YOLO(model)
+    # Start prediction
     results = model.predict(
-        source=image,
-        conf=0.3,
+        source=read_image_list(images),
+        conf=0.4,
         save=True,
+        project=save_dir[0],
+        name=save_dir[1],
         line_width=3,
         show_labels=True,
-        show_conf=True
+        show_conf=True,
     )
     # Display prediction
-    results[0].show()
+    if verbose:
+        results[0].show()
     click.echo(click.style("=== Prediction completed successfully. ===", fg="green"))
 
 

@@ -2,8 +2,9 @@
 .DS_Store/
 01_datasets/
 02_preprocess/
+03_prediction/
 runs/
-weights/
+weights_history/
 *.pt
 
 # Byte-compiled / optimized / DLL files
