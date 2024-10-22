@@ -6,6 +6,7 @@
 runs/
 weights_history/
 *.pt
+backup/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

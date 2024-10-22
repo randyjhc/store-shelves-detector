@@ -6,4 +6,3 @@ ultralytics
 kagglehub
 click
 black
-gradio
