@@ -82,14 +82,14 @@ The prediction functionality allows you to perform object detection on images us
 
     1. __Specify the Pre-trained Model:__ Provide the path to the pre-trained model weights. This file contains the model's parameters that have been fine-tuned for object detection on a specific dataset.
 
-    2. __Assign an Image for Prediction:__ Specify the path to the image on which you want to perform object detection. This image will be processed by the model to detect objects and generate predictions.
+    2. __Assign a List of Image for Prediction:__ Specify paths to the image on which you want to perform object detection in a text file. This image will be processed by the model to detect objects and generate predictions. See example content of the file [HERE](./samples/input_list.txt).
 
     __Combining 1. and 2.__
     To execute the prediction, use the following command:
     ```
-    python shelves_detect.py predict MODEL_PATH IMAGE_PATH
+    python shelves_detect.py predict MODEL_PATH IMAGE_LIST
     ```
-    Replace `MODEL_PATH` with the path to your model weights file and `IMAGE_PATH` with the path to the image you wish to analyze. This will initiate the object detection process, and the results will be displayed or saved based on the script’s configuration.
+    Replace `MODEL_PATH` with the path to your model weights file and `IMAGE_LIST` with the path to the image you wish to analyze. This will initiate the object detection process, and the results will be displayed or saved based on the script’s configuration.
     
 # Project Structure
 The project follows a structured organization to maintain clarity and support efficient development.
@@ -144,7 +144,9 @@ For more details, refer to the official YOLO v11 documentation: [Ultralytics YOL
 # Dataset
 To fine-tune the model for shelf object detection, the SKU110K dataset is utilized. This dataset, introduced at CVPR 2019, contains images of store shelves with various products, making it well-suited for training models aimed at detecting objects in retail environments.
 
-You can find more information about the SKU110K dataset and download it here:[SKU110K Dataset on GitHub](https://github.com/eg4000/SKU110K_CVPR19).
+In this project, the dataset is downloaded through kagglehub API. The dataset link can be found [Here](https://www.kaggle.com/datasets/thedatasith/sku110k-annotations)
+
+You can also find more information about the SKU110K dataset and download it here: [SKU110K Dataset on GitHub](https://github.com/eg4000/SKU110K_CVPR19).
 
 # Training
 Training was conducted in a cloud-based environment using Google Colab, which provides access to a T4 GPU with 16 GB of RAM. The training process took approximately 10 minutes per epoch for the entire dataset. The current sample output images was predicted by a nine-epoch trained model.
