@@ -9,7 +9,7 @@ This project focuses on detecting objects on store shelves using computer vision
 # Features
 - __Training__
     - __Dataset Subsampling:__ Dynamically subsample the dataset to a specified number of training, validation, and test samples, enabling flexible experimentation with different dataset sizes.
-    - __Image Preprocessing:__ Automatically preprocess images to adapt to the input size requirements of the model. This includes resizing, cropping, and any other necessary transformations.
+    - __Image Preprocessing:__ Automatically preprocess images to adapt to the input size requirements of the model. This includes resizing, padding, and any other necessary transformations.
     - __Label Adjustment:__ Adjust and normalize labels to align with the resizing factors applied during image preprocessing, ensuring accurate training.
 - __Predition__
     - __Loading Custom Pre-trained Weights:__ Easily load custom weights to fine-tune the model or make predictions on new datasets, leveraging transfer learning techniques.
@@ -55,7 +55,7 @@ This project includes a command-line interface (CLI) for ease of use. Below are 
 
     1. __Specify the number of samples__ for training, validation, and testing:
         ```
-        --samples (40, 10, 10)
+        --samples 40 10 10
         ```
         This argument sets the number of images for each dataset split.
 
@@ -73,7 +73,7 @@ This project includes a command-line interface (CLI) for ease of use. Below are 
 
     4. __Combining the options together:__
         ```
-        python shelf_detection.py train --samples (X,Y,Z) --weights WEIGHT_PATH --epochs N
+        python shelf_detection.py train --samples X Y Z --weights WEIGHT_PATH --epochs N
         ```
         Replace `X`, `Y`, `Z`, `WEIGHT_PATH`, and `N` with your desired values to start training.
 

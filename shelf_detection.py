@@ -252,13 +252,13 @@ def read_image_list(image_list):
     "--samples",
     type=click.Tuple([int, int, int]),
     default=(80, 20, 20),
-    help="tuple of (train, val, test) samples",
+    help="tuple of (train, val, test) samples"
 )
 @click.option(
     "--weights",
     type=click.STRING,
     default="yolo11n.pt",
-    help="string of pre-trained model name",
+    help="string of pre-trained model name"
 )
 @click.option(
     "--epochs", type=click.INT, default=1, help="number of training iterations"
