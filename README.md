@@ -73,7 +73,7 @@ This project includes a command-line interface (CLI) for ease of use. Below are 
 
     4. __Combining the options together:__
         ```
-        python shelves_detect.py train --samples (X,Y,Z) --weights WEIGHT_PATH --epochs N
+        python shelf_detection.py train --samples (X,Y,Z) --weights WEIGHT_PATH --epochs N
         ```
         Replace `X`, `Y`, `Z`, `WEIGHT_PATH`, and `N` with your desired values to start training.
 
@@ -87,7 +87,7 @@ The prediction functionality allows you to perform object detection on images us
     __Combining 1. and 2.__
     To execute the prediction, use the following command:
     ```
-    python shelves_detect.py predict MODEL_PATH IMAGE_LIST
+    python shelf_detection.py predict MODEL_PATH IMAGE_LIST
     ```
     Replace `MODEL_PATH` with the path to your model weights file and `IMAGE_LIST` with the path to the image you wish to analyze. This will initiate the object detection process, and the results will be displayed or saved based on the script’s configuration.
     
@@ -99,7 +99,7 @@ Upon cloning the repository, the following files and directories will be present
 ```
 ├── shelves.ipynb       # Jupyter notebook for interactive experimentation
 ├── train.yaml          # Configuration file for training parameters
-├── shelves_detect.py   # Main script for training and prediction
+├── shelf_detection.py   # Main script for training and prediction
 ├── README.md           # Project documentation
 ├── samples             # Folder containing example input and output images
     ├── inputs          # Sample input images

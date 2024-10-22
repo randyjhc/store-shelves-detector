@@ -318,7 +318,7 @@ def train(samples, weights, epochs):
 @click.option(
     "--save_dir",
     type=click.Tuple([str, str]),
-    default=("sample", "outputs"),
+    default=("samples", "outputs"),
     help="string of folder name for prediction output",
 )
 @click.option(
