@@ -5,6 +5,12 @@ This project focuses on detecting objects on store shelves using computer vision
     <img src="./samples/outputs/test_301.jpg" alt="Image#1" width="30%" />
     <img src="./samples/outputs/test_1079.jpg" alt="Image#2" width="30%" />
 </p>
+<p align="center">
+    <video width="640" height="384" controls>
+    <source src="https://youtube.com/shorts/hBAv4bQ_Y3w?feature=share" type="video/mp4">
+    Your browser does not support the video tag.
+    </video>
+</p>
 
 # Features
 - __Training__
