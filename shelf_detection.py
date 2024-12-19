@@ -367,5 +367,48 @@ def cli():
 cli.add_command(train)
 cli.add_command(predict)
 
+def real_time_detection():
+    # Real time object detection
+    model = YOLO('./weights/epoch14.pt')
+
+    vr = cv2.VideoCapture('./videos/001.MP4')
+    ret, frame = vr.read()
+
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    height, width = frame.shape[:2]
+    print(width, height)
+    out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (width, height))
+
+    while True:
+        ret, frame = vr.read()
+        if ret == False:
+            print('Unable to read video')
+            break
+        
+        # cv2.imshow('YOLO', frame)
+        
+        pred_image = model.predict(
+            source=frame,       # Path to your input image
+            conf=0.4,                    # Confidence threshold for predictions
+            save=False,                   # Save the output image
+            line_width=2,                # Line thickness for bounding boxes
+            show_labels=True,            # Hide the class labels
+            show_conf=True               # Hide the confidence scores
+        )
+        
+        pred_frame = pred_image[0].plot()
+        cv2.imshow('YOLO', pred_frame)
+
+        out.write(pred_frame)
+
+        if cv2.waitKey(10)==27:
+            break
+
+    cv2.destroyAllWindows()
+    vr.release()
+
+
+
 if __name__ == "__main__":
-    cli()
+    # cli()
+    real_time_detection()
