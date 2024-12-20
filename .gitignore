@@ -8,6 +8,7 @@ weights_history/
 *.pt
 backup/
 videos/
+.python-version
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

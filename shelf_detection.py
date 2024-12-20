@@ -356,59 +356,82 @@ def predict(model, images, save_dir=("samples", "outputs"), verbose=False):
         results[0].show()
     click.echo(click.style("=== Prediction completed successfully. ===", fg="green"))
 
+@click.command()
+@click.argument("model", type=click.STRING)
+@click.argument("video", type=click.STRING)
+@click.option(
+    "--save_dir",
+    type=click.Tuple([str, str]),
+    default=("videos", "outputs"),  # Default directory structure: "videos/outputs".
+    help="String of folder name for prediction output",
+)
+def video(model, video, save_dir=("vidoes", "outputs")):
+    """
+    Real-time object detection using a specified YOLO model on a video file.
+    Args:
+        model (str): Path to the YOLO model file.
+        video (str): Path to the input video file.
+        save_dir (tuple): Tuple specifying the folder structure for saving output.
+    """
+    # Initialize the YOLO model using the given model path or identifier.
+    model = YOLO(model)
+
+    # Open the video file using OpenCV's VideoCapture.
+    vr = cv2.VideoCapture(video)
+    ret, frame = vr.read()
+
+    # Configure the video writer with the codec 'X264' and output video properties.
+    fourcc = cv2.VideoWriter_fourcc(*'X264')
+    height, width = frame.shape[:2]
+
+    # Construct the output file path using the save_dir tuple and input video name.
+    output_name = f"./{save_dir[0]}/{save_dir[1]}/{video.replace('\\', '.').split('.')[-2]}.mp4"
+    out = cv2.VideoWriter(output_name, fourcc, 30.0, (width, height))
+
+    while True:
+        # Read the next frame from the video.
+        ret, frame = vr.read()
+        # Exit the loop if the frame could not be read.
+        if ret == False:
+            print('Unable to read video')
+            break
+        
+        # Predict objects in the current frame using the YOLO model.
+        pred_image = model.predict(
+            source=frame,    
+            conf=0.4,        
+            save=False,      
+            line_width=2,    
+            show_labels=True,
+            show_conf=True   
+        )
+        
+        # Render the predictions on the frame for visualization.
+        pred_frame = pred_image[0].plot()
+        cv2.imshow('YOLO', pred_frame)  # Display the processed frame in a window.
+
+        # Write the processed frame to the output video.
+        out.write(pred_frame)
+
+        # Break the loop if the "Escape" key is pressed.
+        if cv2.waitKey(10) == 27:  
+            break
+
+    # Clean up resources: close all OpenCV windows, release video input and output.
+    cv2.destroyAllWindows()
+    vr.release()
+
 
 @click.group()
 def cli():
     """Main command-line interface group."""
     pass
 
-
 # Add the training and prediction commands to the CLI
 cli.add_command(train)
 cli.add_command(predict)
-
-def real_time_detection():
-    # Real time object detection
-    model = YOLO('./weights/epoch14.pt')
-
-    vr = cv2.VideoCapture('./videos/001.MP4')
-    ret, frame = vr.read()
-
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    height, width = frame.shape[:2]
-    print(width, height)
-    out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (width, height))
-
-    while True:
-        ret, frame = vr.read()
-        if ret == False:
-            print('Unable to read video')
-            break
-        
-        # cv2.imshow('YOLO', frame)
-        
-        pred_image = model.predict(
-            source=frame,       # Path to your input image
-            conf=0.4,                    # Confidence threshold for predictions
-            save=False,                   # Save the output image
-            line_width=2,                # Line thickness for bounding boxes
-            show_labels=True,            # Hide the class labels
-            show_conf=True               # Hide the confidence scores
-        )
-        
-        pred_frame = pred_image[0].plot()
-        cv2.imshow('YOLO', pred_frame)
-
-        out.write(pred_frame)
-
-        if cv2.waitKey(10)==27:
-            break
-
-    cv2.destroyAllWindows()
-    vr.release()
-
-
+cli.add_command(video)
 
 if __name__ == "__main__":
-    # cli()
-    real_time_detection()
+    cli()
+    # real_time_detection()
